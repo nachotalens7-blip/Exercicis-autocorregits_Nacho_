@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercicis XML, DTD i XSD</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .exercise-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        .exercise-card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .statement {
+            background-color: #fcfcfc;
+            border: 1px dashed #ccc;
+            padding: 12px;
+            border-radius: 4px;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .btn-container {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button.btn-xsd {
+            background-color: #2ecc71;
+        }
+        button.btn-xsd:hover {
+            background-color: #27ae60;
+        }
+        .code-block {
+            display: none;
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Panell d'Exercicis: XML, DTD i XSD</h1>
+
+    <div class="exercise-card">
+        <h2>Exercici 1 - Catàleg de llibres</h2>
+        <div class="statement">
+            Crea un DTD i un document XML per a representar un catàleg de llibres.<br>
+            Condicions:<br>
+            El catàleg pot contenir un o més llibres.<br>
+            Cada llibre ha de tenir:<br>
+            titol<br>
+            autor<br>
+            any<br>
+            preu<br>
+            Cada llibre té un atribut categoria amb valors possibles:<br>
+            novella<br>
+            assaig<br>
+            tecnologia
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd1')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd1')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd1" class="code-block">&lt;!ELEMENT cataleg (llibre+)&gt;
+&lt;!ELEMENT llibre (titol, autor, any, preu)&gt;
+&lt;!ATTLIST llibre categoria (novel·la | assaig | tecnologia) #REQUIRED&gt;
+&lt;!ELEMENT titol (#PCDATA)&gt;
+&lt;!ELEMENT autor (#PCDATA)&gt;
+&lt;!ELEMENT any (#PCDATA)&gt;
+&lt;!ELEMENT preu (#PCDATA)&gt;</div>
+        <div id="xsd1" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="cataleg"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="llibre" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="titol" type="xs:string"/&gt;
+              &lt;xs:element name="autor" type="xs:string"/&gt;
+              &lt;xs:element name="any" type="xs:integer"/&gt;
+              &lt;xs:element name="preu" type="xs:decimal"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="categoria" use="required"&gt;
+              &lt;xs:simpleType&gt;
+                &lt;xs:restriction base="xs:string"&gt;
+                  &lt;xs:enumeration value="novel·la"/&gt;
+                  &lt;xs:enumeration value="assaig"/&gt;
+                  &lt;xs:enumeration value="tecnologia"/&gt;
+                &lt;/xs:restriction&gt;
+              &lt;/xs:simpleType&gt;
+            &lt;/xs:attribute&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>Exercici 2 - Agenda de contactes</h2>
+        <div class="statement">
+            Crea un XML i un DTD per a representar una agenda de contactes.<br>
+            Condicions:<br>
+            L'arrel és agenda.<br>
+            Pot contenir diversos contactes.<br>
+            Cada contacte té:<br>
+            nom<br>
+            telefon<br>
+            email (opcional)<br>
+            L'atribut tipus pot ser:<br>
+            personal<br>
+            professional
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd2')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd2')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd2" class="code-block">&lt;!ELEMENT agenda (contacte+)&gt;
+&lt;!ELEMENT contacte (nom, telefon, email?)&gt;
+&lt;!ATTLIST contacte tipus (personal | professional) #REQUIRED&gt;
+&lt;!ELEMENT nom (#PCDATA)&gt;
+&lt;!ELEMENT telefon (#PCDATA)&gt;
+&lt;!ELEMENT email (#PCDATA)&gt;</div>
+        <div id="xsd2" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="agenda"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="contacte" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="nom" type="xs:string"/&gt;
+              &lt;xs:element name="telefon" type="xs:string"/&gt;
+              &lt;xs:element name="email" type="xs:string" minOccurs="0"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="tipus" use="required"&gt;
+              &lt;xs:simpleType&gt;
+                &lt;xs:restriction base="xs:string"&gt;
+                  &lt;xs:enumeration value="personal"/&gt;
+                  &lt;xs:enumeration value="professional"/&gt;
+                &lt;/xs:restriction&gt;
+              &lt;/xs:simpleType&gt;
+            &lt;/xs:attribute&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>Exercici 3 - Botiga online</h2>
+        <div class="statement">
+            Defineix un XML i un DTD per a representar una botiga online.<br>
+            Condicions:<br>
+            L'arrel és botiga.<br>
+            Conté diversos producte.<br>
+            Cada producte té:<br>
+            nom<br>
+            preu<br>
+            stock<br>
+            Atribut id obligatori.
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd3')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd3')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd3" class="code-block">&lt;!ELEMENT botiga (producte+)&gt;
+&lt;!ELEMENT producte (nom, preu, stock)&gt;
+&lt;!ATTLIST producte id ID #REQUIRED&gt;
+&lt;!ELEMENT nom (#PCDATA)&gt;
+&lt;!ELEMENT preu (#PCDATA)&gt;
+&lt;!ELEMENT stock (#PCDATA)&gt;</div>
+        <div id="xsd3" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="botiga"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="producte" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="nom" type="xs:string"/&gt;
+              &lt;xs:element name="preu" type="xs:decimal"/&gt;
+              &lt;xs:element name="stock" type="xs:integer"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="id" type="xs:ID" use="required"/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>Exercici 4 - Cursos d'un centre</h2>
+        <div class="statement">
+            Enunciat<br>
+            Modela un XML i DTD per a representar cursos d'un centre educatiu.<br>
+            Condicions:<br>
+            Un centre té diversos cursos.<br>
+            Cada curs té:<br>
+            nom<br>
+            professor<br>
+            hores<br>
+            Pot tenir 0 o més alumnes.
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd4')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd4')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd4" class="code-block">&lt;!ELEMENT centre (curs+)&gt;
+&lt;!ELEMENT curs (nom, professor, hores, alumne*)&gt;
+&lt;!ELEMENT nom (#PCDATA)&gt;
+&lt;!ELEMENT professor (#PCDATA)&gt;
+&lt;!ELEMENT hores (#PCDATA)&gt;
+&lt;!ELEMENT alumne (#PCDATA)&gt;</div>
+        <div id="xsd4" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="centre"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="curs" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="nom" type="xs:string"/&gt;
+              &lt;xs:element name="professor" type="xs:string"/&gt;
+              &lt;xs:element name="hores" type="xs:integer"/&gt;
+              &lt;xs:element name="alumne" type="xs:string" minOccurs="0" maxOccurs="unbounded"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>Exercici 5 - Sistema de comandes</h2>
+        <div class="statement">
+            Defineix un XML i DTD per a representar comandes d'una botiga.<br>
+            Condicions:<br>
+            L'arrel és comandes.<br>
+            Cada comanda té:<br>
+            atribut numero<br>
+            client<br>
+            una o més linia<br>
+            Cada línia conté:<br>
+            producte<br>
+            . quantitat
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd5')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd5')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd5" class="code-block">&lt;!ELEMENT comandes (comanda+)&gt;
+&lt;!ELEMENT comanda (client, linia+)&gt;
+&lt;!ATTLIST comanda numero CDATA #REQUIRED&gt;
+&lt;!ELEMENT client (#PCDATA)&gt;
+&lt;!ELEMENT linia (producte, quantitat)&gt;
+&lt;!ELEMENT producte (#PCDATA)&gt;
+&lt;!ELEMENT quantitat (#PCDATA)&gt;</div>
+        <div id="xsd5" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="comandes"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="comanda" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="client" type="xs:string"/&gt;
+              &lt;xs:element name="linia" maxOccurs="unbounded"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name="producte" type="xs:string"/&gt;
+                    &lt;xs:element name="quantitat" type="xs:integer"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="numero" type="xs:string" use="required"/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>Exercici 6 - Biblioteca amb referències (ID / IDREF)</h2>
+        <div class="statement">
+            Modela un sistema de biblioteca.<br>
+            Condicions:<br>
+            Hi ha llibres i prestecs.<br>
+            Cada llibre té un id.<br>
+            Un préstec referencia el llibre mitjançant IDREF.
+        </div>
+        <div class="btn-container">
+            <button onclick="toggleCode('dtd6')">Mostrar/Ocultar DTD</button>
+            <button class="btn-xsd" onclick="toggleCode('xsd6')">Mostrar/Ocultar XSD</button>
+        </div>
+        <div id="dtd6" class="code-block">&lt;!ELEMENT biblioteca (llibre+, prestec*)&gt;
+&lt;!ELEMENT llibre (titol)&gt;
+&lt;!ATTLIST llibre id ID #REQUIRED&gt;
+&lt;!ELEMENT titol (#PCDATA)&gt;
+&lt;!ELEMENT prestec (usuari)&gt;
+&lt;!ATTLIST prestec llibre IDREF #REQUIRED&gt;
+&lt;!ELEMENT usuari (#PCDATA)&gt;</div>
+        <div id="xsd6" class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="biblioteca"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="llibre" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="titol" type="xs:string"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="id" type="xs:ID" use="required"/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="prestec" minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="usuari" type="xs:string"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name="llibre" type="xs:IDREF" use="required"/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+    </div>
+
+    <script>
+        function toggleCode(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "block") {
+                element.style.display = "none";
+            } else {
+                element.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
